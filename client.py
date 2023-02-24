@@ -93,3 +93,4 @@ while connected:
 
         if msg == "True":
             print("Someone died! ------------------------------")
+            memory.player_kill()
