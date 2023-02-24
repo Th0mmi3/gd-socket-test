@@ -48,12 +48,17 @@ while True:
 
 import socket
 import threading
+import gd
 
-IP = "192.168.0.203"
-PORT = 5555
+IP = "0.tcp.eu.ngrok.io"
+PORT = 17010
 SIZE = 1024
 FORMAT = "utf-8"
 DISCONNECT_MSG = "!DISCONNECT"
+
+memory = gd.memory.get_memory()
+do_print = True
+revertDeath = False
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect((IP, PORT))
@@ -61,12 +66,30 @@ print(f"[CONNECTED] Client connected to server at {IP}:{PORT}")
 
 connected = True
 while connected:
-    msg = input("> ")
+    msg = "!state"
 
-    client.send(msg.encode(FORMAT))
+
+    #print("are we looping?")
+
+    # Handle player deaths
+
+    if memory.is_dead():  # if player is dead
+        if do_print:
+            msg = "!died"
+            client.send(msg.encode(FORMAT))
+            print("print: player died ---------------------")
+            do_print = False
+    else:
+        do_print = True
+        msg = "!undie"
+        print("print: im not dead")
 
     if msg == DISCONNECT_MSG:
         connected = False
     else:
+        client.send(msg.encode(FORMAT))
         msg = client.recv(SIZE).decode(FORMAT)
         print(f"[SERVER {msg}]")
+
+        if msg == "True":
+            print("Someone died! ------------------------------")
