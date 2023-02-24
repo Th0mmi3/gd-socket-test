@@ -58,7 +58,7 @@ DISCONNECT_MSG = "!DISCONNECT"
 
 memory = gd.memory.get_memory()
 do_print = True
-revertDeath = False
+invincibility = False
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect((IP, PORT))
@@ -67,8 +67,6 @@ print(f"[CONNECTED] Client connected to server at {IP}:{PORT}")
 connected = True
 while connected:
     msg = "!state"
-
-
     #print("are we looping?")
 
     # Handle player deaths
@@ -76,20 +74,20 @@ while connected:
     if memory.is_dead():  # if player is dead
         if do_print:
             msg = "!died"
-            client.send(msg.encode(FORMAT))
-            print("print: player died ---------------------")
+            #client.send(msg.encode(FORMAT))
             do_print = False
+        else:
+            msg = "!undie"
     else:
         do_print = True
-        msg = "!undie"
-        print("print: im not dead")
+
 
     if msg == DISCONNECT_MSG:
         connected = False
     else:
         client.send(msg.encode(FORMAT))
         msg = client.recv(SIZE).decode(FORMAT)
-        print(f"[SERVER {msg}]")
+        #print(f"[SERVER {msg}]")
 
         if msg == "True":
             print("Someone died! ------------------------------")
