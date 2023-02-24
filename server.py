@@ -1,29 +1,15 @@
-""""
-import socket
-
-HOST = "192.168.0.203"  # Standard loopback interface address (localhost)
-PORT = 5555  # Port to listen on (non-privileged ports are > 1023)
-
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    s.bind((HOST, PORT))
-    s.listen(5)
-    conn, addr = s.accept()
-    with conn:
-        print(f"Connected by {addr}")
-        while True:
-            data = conn.recv(1024)
-            if not data:
-                break
-            conn.sendall(data)
-
-            print(f"{data} was send by {addr}")
-"""
-
 import socket
 import threading
+import sys
 
+# Handle arguments
 IP = "localhost"
 PORT = 5555
+if len(sys.argv) >= 2:
+    IP = sys.argv[1]
+if len(sys.argv) >= 3:
+    PORT = sys.argv[2]
+
 SIZE = 1024
 FORMAT = "utf-8"
 DISCONNECT_MSG = "!DISCONNECT"
@@ -59,7 +45,6 @@ def handle_client(conn, addr):
         conn.send(returnMsg.encode(FORMAT))
 
     conn.close()
-
 
 while True:
     conn, addr = server.accept()
