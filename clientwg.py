@@ -1,5 +1,5 @@
 import socket
-import gd
+#import gd
 import sys
 
 IP = sys.argv[1]
@@ -8,7 +8,7 @@ SIZE = 1024
 FORMAT = "utf-8"
 DISCONNECT_MSG = "!DISCONNECT"
 
-memory = gd.memory.get_memory()
+# memory = gd.memory.get_memory()
 do_print = True
 invincibility = False
 
@@ -23,15 +23,17 @@ while connected:
 
     # Handle player deaths
 
+    """
     if memory.is_dead():  # if player is dead
         if do_print:
             msg = "!died"
             #client.send(msg.encode(FORMAT))
             do_print = False
         else:
-            msg = "!undie"
+            "zmsg = "!undie"
     else:
         do_print = True
+    """
 
 
     if msg == DISCONNECT_MSG:
@@ -43,4 +45,6 @@ while connected:
 
         if msg == "True":
             print("Someone died! ------------------------------")
-            memory.player_kill()
+
+            #memory.player_kill()
+
